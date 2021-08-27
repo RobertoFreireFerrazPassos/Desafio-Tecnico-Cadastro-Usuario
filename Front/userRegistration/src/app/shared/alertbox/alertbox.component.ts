@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { TypeMessage } from './typeMessage';
+import { TypeAlert } from './altertMessage';
 
 @Component({
   selector: 'app-alertbox',
@@ -9,7 +9,7 @@ import { TypeMessage } from './typeMessage';
 })
 export class AlertboxComponent implements OnInit {
   @Input() message : String;
-  @Input() type : TypeMessage;
+  @Input() type : TypeAlert;
 
   constructor() { }
 
@@ -17,10 +17,10 @@ export class AlertboxComponent implements OnInit {
   }
 
   isSucessMessage(){
-    return this.type === TypeMessage.Success;
+    return this.type === TypeAlert.Success;
   }
 
   isErrorMessage(){
-    return this.type === TypeMessage.Error;
+    return this.type === TypeAlert.Error;
   }
 }

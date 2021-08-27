@@ -15,18 +15,21 @@ input.ng-dirty.ng-invalid:not(form)  {
   border-color: #f10303;
 }
 
+.buttons {
+  display:flex;
+  justify-content:space-between;
+}
+
 .btn-delete {
   box-shadow: 2px 2px rgba(219, 15, 25,0.5);
   color: rgba(219, 15, 25,1);
   border-color:rgb(219, 15, 25);
-  float: left;
 }
 
 .btn-save {
   box-shadow: 2px 2px rgba(0, 51, 153,0.5);
   color: rgba(0, 51, 153,1);
   border-color: darkcyan;
-  float: right;
 }
 
 .btn:hover {

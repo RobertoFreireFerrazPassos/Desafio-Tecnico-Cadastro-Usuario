@@ -44,8 +44,10 @@
             placement="right"
             placeholder="Senha">
         </div>
-        <button class="btn btn-delete mb-2 mr-2" *ngIf="isEditMode" (click)="deleteUserForm()">Excluir</button>
-        <button class="btn btn-save mb-2 mr-2" [disabled]="!userForm.valid || isLoading" (click)="saveUserForm()"> {{ isEditMode ?  "Editar" : "Salvar"}}</button>
+        <div class="buttons">
+          <button class="btn btn-delete mb-2 mr-2" *ngIf="isEditMode" (click)="deleteUser()">Excluir</button>
+          <button class="btn btn-save mb-2 mr-2" [disabled]="!userForm.valid || isLoading" (click)="saveUser()"> {{ isEditMode ?  "Editar" : "Salvar"}}</button>
+        </div>
       </form>
     </div>
     <app-alertbox *ngIf="messageAlert.active" [message]="messageAlert.message" [type]="messageAlert.type"></app-alertbox>

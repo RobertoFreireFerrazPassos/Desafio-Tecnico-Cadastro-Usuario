@@ -4,7 +4,7 @@ import { Subscription, timer } from 'rxjs';
 import { UserService } from 'src/app/core/services/user/user.service';
 
 import { Gender, UserModel } from '../../shared/models/user/user-model';
-import { TypeMessage } from '../../shared/alertbox/typeMessage';
+import { TypeAlert, MessageAlert } from '../../shared/alertbox/altertMessage';
 
 @Component({
   selector: 'app-user',
@@ -17,9 +17,9 @@ export class UserComponent implements OnInit {
   isLoading : Boolean =  false;
   saveUserForsubscription : Subscription;
   isEditMode : Boolean =  false;
-  messageAlert = {
+  messageAlert : MessageAlert = {
     message : "",
-    type : "",
+    type : TypeAlert.Unknown,
     active : false
   }
   messageTimer = timer(3000);
@@ -37,18 +37,18 @@ export class UserComponent implements OnInit {
     });
   }
 
-  deleteUserForm() : void{
+  deleteUser() : void{
 
   }
 
-  saveUserForm() : void {
+  saveUser() : void {
     this.isLoading = true;
     const user : UserModel = this.userForm.value;
     this.saveUserForsubscription = this.userService.addUser(user).subscribe(() => {
       this.messageAlert = {
         message : "Usuário salvo com sucesso!",
         active : true,
-        type : TypeMessage.Success
+        type : TypeAlert.Success
       }
       this.afterUserServiceSubscription();
     },
@@ -56,7 +56,7 @@ export class UserComponent implements OnInit {
       this.messageAlert = {
         message : "Erro ao salvar usuário!",
         active : true,
-        type : TypeMessage.Error
+        type : TypeAlert.Error
       }
       this.afterUserServiceSubscription();
     });
