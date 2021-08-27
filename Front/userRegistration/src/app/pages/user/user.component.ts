@@ -40,18 +40,12 @@ export class UserComponent implements OnInit {
     this.isLoading = true;
     const user : UserModel = this.userForm.value;
     this.saveUserForsubscription = this.userService.addUser(user).subscribe(() => {
-      this.saveUserForsubscription.unsubscribe();
       this.messageAlert = {
         message : "Usuário salvo com sucesso!",
         active : true,
         type : TypeMessage.Success
       }
-
-      const subscribe = this.messageTimer.subscribe(val => {
-        this.messageAlert.active = false;
-        subscribe.unsubscribe();
-        this.isLoading = false;
-      });
+      this.afterUserServiceSubscription();
     },
     err => {
       this.messageAlert = {
@@ -59,11 +53,16 @@ export class UserComponent implements OnInit {
         active : true,
         type : TypeMessage.Error
       }
-      const subscribe = this.messageTimer.subscribe(val => {
-        this.messageAlert.active = false;
-        this.isLoading = false;
-        subscribe.unsubscribe();
-      });
+      this.afterUserServiceSubscription();
+    });
+  }
+
+  private afterUserServiceSubscription(){
+    this.saveUserForsubscription.unsubscribe();
+    const subscribe = this.messageTimer.subscribe(() => {
+      this.messageAlert.active = false;
+      this.isLoading = false;
+      subscribe.unsubscribe();
     });
   }
 }
