@@ -5,3 +5,22 @@
 .container {
   padding-right: 50px;
 }
+
+.errorMessage {
+  font-size: 9px;
+  color:#f10303;
+}
+
+input.ng-dirty.ng-invalid:not(form)  {
+  border-color: #f10303;
+}
+
+.btn {
+  box-shadow: 2px 2px rgba(0, 51, 153,0.5);
+  color: rgba(0, 51, 153,1);
+  border-color: darkcyan;
+}
+
+.btn:hover {
+  box-shadow: none;
+}
