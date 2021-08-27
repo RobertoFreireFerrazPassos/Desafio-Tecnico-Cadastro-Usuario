@@ -16,6 +16,7 @@ export class UserComponent implements OnInit {
   genders : string[] = [Gender.Male,Gender.Female];
   isLoading : Boolean =  false;
   saveUserForsubscription : Subscription;
+  isEditMode : Boolean =  false;
   messageAlert = {
     message : "",
     type : "",
@@ -34,6 +35,10 @@ export class UserComponent implements OnInit {
       'password' : new FormControl(null, null),
       'gender' : new FormControl(null, Validators.required)
     });
+  }
+
+  deleteUserForm() : void{
+
   }
 
   saveUserForm() : void {

@@ -5,6 +5,7 @@
   background-color: rgba(0, 51, 153,0.1);
   border-radius: 25px;
   border-style: solid;
+  overflow: hidden;
   border-width: 2px;
   border-color: rgba(0, 51, 153,0.3);
   box-shadow: 2px 4px 5px rgba(0, 51, 153,0.5);

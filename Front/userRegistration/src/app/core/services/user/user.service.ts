@@ -13,6 +13,7 @@ export class UserService {
   }
 
   public addUser(user : UserModel) : Observable<any>{
+    user.active = true;
     return this.userHttpService.addUser(user);
   }
 }
