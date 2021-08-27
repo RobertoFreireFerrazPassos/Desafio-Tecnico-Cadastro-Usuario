@@ -5,6 +5,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
 
 import { Gender, UserModel } from '../../shared/models/user/user-model';
 import { TypeAlert, MessageAlert } from '../../shared/alertbox/altertMessage';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -24,7 +25,9 @@ export class UserComponent implements OnInit {
   }
   messageTimer = timer(3000);
 
-  constructor(private userService : UserService) {
+  constructor(private userService : UserService,
+              private route : ActivatedRoute) {
+    const userId = this.route.snapshot.queryParams.id;
   }
 
   ngOnInit(): void {

@@ -11,7 +11,19 @@ export class UserHttpService {
 
   constructor(private http : HttpClient) { }
 
+  public getUsers(user : UserModel) : Observable<any>{
+    return this.http.get(this.rootPath + "/user/get");
+  }
+
+  public deleteUser(user : UserModel) : Observable<any>{
+    return this.http.get(this.rootPath + "/user/delete?id=" + user.id);
+  }
+
+  public editUser(user : UserModel) : Observable<any>{
+    return this.http.post(this.rootPath + "/user/edit", user);
+  }
+
   public addUser(user : UserModel) : Observable<any>{
-    return this.http.post(this.rootPath + "/addUser", user);
+    return this.http.post(this.rootPath + "/user/add", user);
   }
 }

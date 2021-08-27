@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './core/navbar/navbar.component';
 import { UserComponent } from './pages/user/user.component';
 import { AlertboxComponent } from './shared/alertbox/alertbox.component';
+import { UserReportComponent } from './pages/user-report/user-report.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     UserComponent,
-    AlertboxComponent
+    AlertboxComponent,
+    UserReportComponent
   ],
   imports: [
     BrowserModule,

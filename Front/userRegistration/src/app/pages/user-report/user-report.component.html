@@ -1,0 +1,22 @@
+<div class="container m-4">
+  <div class="row">
+    <table class="table table-striped">
+      <tr>
+        <th>Nome</th>
+        <th>Data de Nascimento</th>
+        <th>E-mail</th>
+        <th>Sexo</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let user of users">
+        <td> {{ user.name }}</td>
+        <td> {{ user.birthDate.getDay() + "/" + user.birthDate.getMonth() + "/" + user.birthDate.getFullYear() }}</td>
+        <td> {{ user.email }}</td>
+        <td> {{ user.gender }}</td>
+        <td> <input type="checkbox" name="active" (click)="toggleActivationToUser(user.id)" [checked]=user.active></td>
+        <th><span style ="cursor: pointer;" (click)="editUser(user.id)"><i class="fas fa-edit"></i></span></th>
+      </tr>
+    </table>
+  </div>
+</div>
