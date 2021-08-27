@@ -43,7 +43,8 @@
             placement="right"
             placeholder="Senha">
         </div>
-        <button class="btn btn-outline-info mb-2 mr-2" [disabled]="true" (click)="saveUserForm()">Salvar</button>
+        <button class="btn btn-outline-info mb-2 mr-2" [disabled]="!userForm.valid || isLoading" (click)="saveUserForm()">Salvar</button>
       </form>
     </div>
+    <app-alertbox *ngIf="messageAlert.active" [message]="messageAlert.message" [type]="messageAlert.type"></app-alertbox>
 </div>

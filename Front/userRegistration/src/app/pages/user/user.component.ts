@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription, timer } from 'rxjs';
+import { UserService } from 'src/app/core/services/user/user.service';
+
+import { Gender, UserModel } from '../../shared/models/user/user-model';
+import { TypeMessage } from '../../shared/alertbox/typeMessage';
 
 @Component({
   selector: 'app-user',
@@ -8,35 +13,57 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class UserComponent implements OnInit {
   userForm : FormGroup;
-  genders : string[] = ['Masculino','Feminino'];
-  // Cadastro de Usuários
-  // O cadastro de usuários deverá ser uma tela com os seguintes campos:
-  // 	Nome
-  // 	Data de Nascimento
-  // 	E-mail
-  // 	Senha
-  // 	Sexo (combo)
-  // 	Salvar (botão)
-  // Regra de negócio
-  // 	O cadastro deverá ser salvo no banco de dados como “Ativo”;
-  // 	Os campos Nome, Data de Nascimento, E-mail e Sexo, deverão ser obrigatórios;
-  // 	O campo Nome deverá ter um limite mínimo de 3 caracteres;
-  // 	Deverá ser exibido uma mensagem informando ao usuário que o cadastro foi feito com sucesso.
+  genders : string[] = [Gender.Male,Gender.Female];
+  isLoading : Boolean =  false;
+  saveUserForsubscription : Subscription;
+  messageAlert = {
+    message : "",
+    type : "",
+    active : false
+  }
+  messageTimer = timer(3000);
 
-
-  constructor() { }
+  constructor(private userService : UserService) {
+  }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      'name' : new FormControl(null, null),
-      'birthDate' : new FormControl(null, null),
-      'email' : new FormControl(null, null),
+      'name' : new FormControl(null, [Validators.required,Validators.minLength(3)]),
+      'birthDate' : new FormControl(null, Validators.required),
+      'email' : new FormControl(null, Validators.required),
       'password' : new FormControl(null, null),
-      'gender' : new FormControl(null, null)
+      'gender' : new FormControl(null, Validators.required)
     });
   }
 
   saveUserForm() : void {
+    this.isLoading = true;
+    const user : UserModel = this.userForm.value;
+    this.saveUserForsubscription = this.userService.addUser(user).subscribe(() => {
+      this.saveUserForsubscription.unsubscribe();
+      this.messageAlert = {
+        message : "Usuário salvo com sucesso!",
+        active : true,
+        type : TypeMessage.Success
+      }
 
+      const subscribe = this.messageTimer.subscribe(val => {
+        this.messageAlert.active = false;
+        subscribe.unsubscribe();
+        this.isLoading = false;
+      });
+    },
+    err => {
+      this.messageAlert = {
+        message : "Erro ao salvar usuário!",
+        active : true,
+        type : TypeMessage.Error
+      }
+      const subscribe = this.messageTimer.subscribe(val => {
+        this.messageAlert.active = false;
+        this.isLoading = false;
+        subscribe.unsubscribe();
+      });
+    });
   }
 }
