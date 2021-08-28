@@ -17,7 +17,7 @@ export class UserHttpService {
     return this.http.get(this.rootPath + "/user/get");
   }
 
-  public toggleActivationUser(user : UserModel) : Observable<any>{
+  public toggleActivationUser(user) : Observable<any>{
     return this.http.post(this.rootPath + "/user/toggleactivation", user);
   }
 

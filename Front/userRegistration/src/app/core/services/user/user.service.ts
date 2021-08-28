@@ -16,7 +16,7 @@ export class UserService {
     return this.userHttpService.getUsers();
   }
 
-  public toggleActivationUser(user : UserModel) : Observable<UserModel>{
+  public toggleActivationUser(user) : Observable<boolean>{
     return this.userHttpService.toggleActivationUser(user);
   }
 

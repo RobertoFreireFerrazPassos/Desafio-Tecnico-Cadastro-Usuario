@@ -16,7 +16,7 @@ export class UserReportComponent implements OnInit  {
   toggleActivationUserSubscription : Subscription;
   userEdited : UserModel;
   isLoading : boolean = false;
-  messageTimer = timer(3000);
+  messageTimer = timer(2000);
   messageAlert : MessageAlert = {
     message : "",
     type : TypeAlert.Unknown,
@@ -45,7 +45,10 @@ export class UserReportComponent implements OnInit  {
   toggleActivationToUser(userId: string): void {
     this.isLoading = true;
     this.userEdited = this.users.find(user => user.id === userId);
-    this.toggleActivationUserSubscription = this.userService.toggleActivationUser(this.userEdited).subscribe(this.toggleActivationSuccessHandler, this.toggleActivationErrorHandler);
+    this.toggleActivationUserSubscription = this.userService.toggleActivationUser({
+      id : this.userEdited.id,
+      active : this.userEdited.active
+    }).subscribe(this.toggleActivationSuccessHandler, this.toggleActivationErrorHandler);
   }
 
   private toggleActivationSuccessHandler = () => {

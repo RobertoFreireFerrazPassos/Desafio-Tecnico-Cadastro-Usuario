@@ -56,22 +56,12 @@ namespace UserRegistration.API.Controllers
         }
 
         [HttpPost("toggleactivation")]
-        public UserResponse ToggleActivation([FromBody] UserRequest user)
+        public bool ToggleActivation([FromBody] UserToggleactivationRequest userToggleactivationRequest)
         {
-            User userToEdit = users.FirstOrDefault(u => u.Id == user.Id);
-            userToEdit.Active = !user.Active;
+            User userToEdit = users.FirstOrDefault(u => u.Id == userToggleactivationRequest.Id);
+            userToEdit.Active = !userToggleactivationRequest.Active;
 
-            UserResponse userResponse = new UserResponse()
-            {
-                Active = userToEdit.Active,
-                Email = userToEdit.Email,
-                BirthDate = new DateTime(userToEdit.BirthDate.Year, userToEdit.BirthDate.Month, userToEdit.BirthDate.Day),
-                Name = userToEdit.Name,
-                Gender = userToEdit.Gender,
-                Id = userToEdit.Id
-            };
-
-            return userResponse;
+            return true;
         }
 
         [HttpPost("add")]

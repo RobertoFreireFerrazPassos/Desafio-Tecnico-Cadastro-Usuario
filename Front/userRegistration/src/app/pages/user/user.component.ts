@@ -48,8 +48,13 @@ export class UserComponent implements OnInit {
         } : null, Validators.required),
       'email' : new FormControl(this.user ? this.user.email : null, Validators.required),
       'password' : new FormControl(null),
-      'gender' : new FormControl(this.user ? this.user.gender : null, Validators.required)
+      'gender' : new FormControl(this.user ? this.user.gender : null, Validators.required),
+      'active' : new FormControl(this.user ? this.user.active : null, )
     });
+  }
+
+  toggleActivationToUser() : void{
+    if (!this.isEditMode()) return;
   }
 
   isEditMode() : Boolean {

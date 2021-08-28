@@ -44,6 +44,14 @@
             placement="right"
             placeholder="Senha">
         </div>
+        <div *ngIf="isEditMode()" class="form-group checkbox">
+          <label class="form-check-label">Usuário Ativo: </label>
+          <input type="checkbox"
+          class="form-check-input"
+          formControlName="active"
+          [(ngModel)]="user.active"
+          (ngModelChange)="toggleActivationToUser()">
+        </div>
         <div class="buttons">
           <button class="btn btn-delete mb-2 mr-2" [disabled]="isLoading" *ngIf="isEditMode()" (click)="deleteUser()">Excluir</button>
           <button class="btn btn-save mb-2 mr-2" [disabled]="!userForm.valid || isLoading" (click)="saveUser()"> {{ isEditMode() ?  "Editar" : "Salvar"}}</button>
