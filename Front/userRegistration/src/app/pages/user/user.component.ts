@@ -32,7 +32,6 @@ export class UserComponent implements OnInit {
       const routeState = this.router.getCurrentNavigation().extras.state;
       if (routeState && routeState.user) {
         this.user = routeState.user;
-        console.log(this.user);
       }
     }
   }
