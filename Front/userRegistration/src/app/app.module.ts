@@ -11,6 +11,7 @@ import { UserComponent } from './pages/user/user.component';
 import { AlertboxComponent } from './shared/alertbox/alertbox.component';
 import { UserReportComponent } from './pages/user-report/user-report.component';
 import { CheckboxComponent } from './shared/checkbox/check-box.component';
+import { ModalComponent } from './shared/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CheckboxComponent } from './shared/checkbox/check-box.component';
     UserComponent,
     AlertboxComponent,
     UserReportComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

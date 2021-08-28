@@ -6,6 +6,8 @@ import { UserService } from 'src/app/core/services/user/user.service';
 import { Gender, UserModel } from '../../shared/models/user/user-model';
 import { TypeAlert, MessageAlert, GenerateMessageAlert } from '../../shared/alertbox/altertMessage';
 import { Router } from '@angular/router';
+import { ModalModel } from 'src/app/shared/models/modal/modal-model';
+import { ModalService } from 'src/app/shared/modal/modal.service';
 
 @Component({
   selector: 'app-user',
@@ -16,6 +18,11 @@ export class UserComponent implements OnInit {
   userForm : FormGroup;
   user : UserModel;
   EMPTY_GUID : string = "00000000-0000-0000-0000-000000000000";
+  modalLabels : ModalModel = {
+    title : "Remoção de usuário",
+    text : "Deseja deletar este usuário?",
+    button : "Deletar"
+  };
   genders : string[] = [Gender.Male,Gender.Female];
   isLoading : Boolean =  false;
   saveUserSubscription : Subscription;
@@ -28,7 +35,8 @@ export class UserComponent implements OnInit {
   messageTimer = timer(3000);
 
   constructor(private userService : UserService,
-              private router: Router) {
+              private router: Router,
+              private modalService : ModalService) {
     if (this.router.getCurrentNavigation().extras.state) {
       const routeState = this.router.getCurrentNavigation().extras.state;
       if (routeState && routeState.user) {
@@ -59,6 +67,10 @@ export class UserComponent implements OnInit {
 
   isEditMode() : Boolean {
     return this.user && this.user.id && this.user.id != this.EMPTY_GUID;
+  }
+
+  openModalToDeleteUser() : void {
+    this.modalService.openModal.next();
   }
 
   deleteUser() : void {
@@ -140,5 +152,9 @@ export class UserComponent implements OnInit {
     const user : UserModel = this.userForm.value;
     user.id = (this.user && this.user.id) ? this.user.id : this.EMPTY_GUID;
     return user;
+  }
+
+  confirmDeleteUser() : void {
+    this.deleteUser();
   }
 }
