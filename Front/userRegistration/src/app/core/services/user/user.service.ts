@@ -16,6 +16,10 @@ export class UserService {
     return this.userHttpService.getUsers();
   }
 
+  public getUsersByFilter(userFilter) : Observable<UserModel[]>{
+    return this.userHttpService.getUsersByFilter(userFilter);
+  }
+
   public toggleActivationUser(user) : Observable<boolean>{
     return this.userHttpService.toggleActivationUser(user);
   }

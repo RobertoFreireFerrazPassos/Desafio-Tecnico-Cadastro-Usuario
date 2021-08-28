@@ -17,6 +17,10 @@ export class UserHttpService {
     return this.http.get(this.rootPath + "/user/get");
   }
 
+  public getUsersByFilter(userFilter) : Observable<any>{
+    return this.http.post(this.rootPath + "/user/getusersbyfilter", userFilter);
+  }
+
   public toggleActivationUser(user) : Observable<any>{
     return this.http.post(this.rootPath + "/user/toggleactivation", user);
   }

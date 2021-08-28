@@ -7,6 +7,7 @@ import { UserModel } from 'src/app/shared/models/user/user-model';
 import { TypeAlert, MessageAlert, GenerateMessageAlert } from '../../shared/alertbox/altertMessage';
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { ModalModel } from 'src/app/shared/models/modal/modal-model';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-report',
@@ -15,7 +16,9 @@ import { ModalModel } from 'src/app/shared/models/modal/modal-model';
 })
 export class UserReportComponent implements OnInit  {
   users : UserModel[] = [];
-  deleteUserSubscription :Subscription;
+  userSearchForm : FormGroup;
+  deleteUserSubscription : Subscription;
+  searchUserSubscription : Subscription;
   toggleActivationUserSubscription : Subscription;
   userEdited : UserModel;
   userToDelete : UserModel;
@@ -40,6 +43,22 @@ export class UserReportComponent implements OnInit  {
     const getUserSubscription = this.userService.getUsers().subscribe(users => {
       this.users = users;
       getUserSubscription.unsubscribe();
+    });
+
+    this.userSearchForm = new FormGroup({
+      'name' : new FormControl(''),
+      'active' : new FormControl(false)
+    });
+  }
+
+  toggleActivationUserSearch() : void {
+
+  }
+
+  searchUserByFilter() : void {
+    const filter = this.userSearchForm.value;
+    this.searchUserSubscription = this.userService.getUsersByFilter(filter).subscribe(users => {
+      this.users = users;
     });
   }
 

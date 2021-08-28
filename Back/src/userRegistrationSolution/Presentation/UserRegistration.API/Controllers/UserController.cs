@@ -55,6 +55,30 @@ namespace UserRegistration.API.Controllers
             return userResponse;
         }
 
+        [HttpPost("getusersbyfilter")]
+        public IEnumerable<UserResponse> Getusersbyfilter(UsersFilterResponse filter)
+        {
+            List<UserResponse> userResponse = new List<UserResponse>();
+            foreach (User user in users.Where(u => {
+                if (!String.IsNullOrWhiteSpace(filter.Name)) {
+                    return u.Active == filter.Active && u.Name.Contains(filter.Name, StringComparison.OrdinalIgnoreCase);
+                }
+                return u.Active == filter.Active;
+            }))
+            {
+                userResponse.Add(new UserResponse()
+                {
+                    Active = user.Active,
+                    Email = user.Email,
+                    BirthDate = new DateTime(user.BirthDate.Year, user.BirthDate.Month, user.BirthDate.Day),
+                    Name = user.Name,
+                    Gender = user.Gender,
+                    Id = user.Id
+                });
+            }
+            return userResponse;
+        }
+
         [HttpPost("toggleactivation")]
         public bool ToggleActivation([FromBody] UserToggleactivationRequest userToggleactivationRequest)
         {
