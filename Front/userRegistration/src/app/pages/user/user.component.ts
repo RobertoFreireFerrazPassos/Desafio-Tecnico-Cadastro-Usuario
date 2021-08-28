@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, timer } from 'rxjs';
-import { UserService } from 'src/app/core/services/user/user.service';
 
+import { UserService } from 'src/app/core/services/user/user.service';
 import { Gender, UserModel } from '../../shared/models/user/user-model';
-import { TypeAlert, MessageAlert } from '../../shared/alertbox/altertMessage';
+import { TypeAlert, MessageAlert, GenerateMessageAlert } from '../../shared/alertbox/altertMessage';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,10 +15,11 @@ import { Router } from '@angular/router';
 export class UserComponent implements OnInit {
   userForm : FormGroup;
   user : UserModel;
+  EMPTY_GUID : string = "00000000-0000-0000-0000-000000000000";
   genders : string[] = [Gender.Male,Gender.Female];
   isLoading : Boolean =  false;
-  saveUserForsubscription : Subscription;
-  isEditMode : Boolean =  false;
+  saveUserSubscription : Subscription;
+  deleteUserSubscription :Subscription;
   messageAlert : MessageAlert = {
     message : "",
     type : TypeAlert.Unknown,
@@ -51,37 +52,88 @@ export class UserComponent implements OnInit {
     });
   }
 
-  deleteUser() : void{
+  isEditMode() : Boolean {
+    return this.user && this.user.id && this.user.id != this.EMPTY_GUID;
+  }
 
+  deleteUser() : void {
+    this.isLoading = true;
+    const user = this.convertUserFromUserForm();
+    this.deleteUserSubscription = this.userService.deleteUser(user.id).subscribe(this.deleteSuccessHandler, this.deleteErrorHandler);
+  }
+
+  private deleteSuccessHandler = () => {
+    this.messageAlert = GenerateMessageAlert(TypeAlert.Success, "Usuário removido com sucesso!");
+    if (this.deleteUserSubscription) this.deleteUserSubscription.unsubscribe();
+    this.userForm.reset();
+
+    const subscribe = this.messageTimer.subscribe(() => {
+      this.fadeOutAlertMessage();
+      this.enableButtonsAgain();
+      this.navigateToReport();
+      subscribe.unsubscribe();
+    });
+  }
+
+  private deleteErrorHandler = () => {
+    this.messageAlert = GenerateMessageAlert(TypeAlert.Error, "Erro ao remover usuário!");
+    if (this.deleteUserSubscription) this.deleteUserSubscription.unsubscribe();
+
+    const subscribe = this.messageTimer.subscribe(() => {
+      this.fadeOutAlertMessage();
+      this.enableButtonsAgain();
+      subscribe.unsubscribe();
+    });
   }
 
   saveUser() : void {
     this.isLoading = true;
-    const user : UserModel = this.userForm.value;
-    this.saveUserForsubscription = this.userService.addUser(user).subscribe(() => {
-      this.messageAlert = {
-        message : "Usuário salvo com sucesso!",
-        active : true,
-        type : TypeAlert.Success
-      }
-      this.afterUserServiceSubscription();
-    },
-    err => {
-      this.messageAlert = {
-        message : "Erro ao salvar usuário!",
-        active : true,
-        type : TypeAlert.Error
-      }
-      this.afterUserServiceSubscription();
+    const user = this.convertUserFromUserForm();
+    if (this.isEditMode()){
+      this.saveUserSubscription = this.userService.editUser(user).subscribe(this.addOrEditSuccessHandler, this.addOrEditErrorHandler);
+    } else {
+      this.saveUserSubscription = this.userService.addUser(user).subscribe(this.addOrEditSuccessHandler, this.addOrEditErrorHandler);
+    }
+  }
+
+  private addOrEditSuccessHandler = () => {
+    this.messageAlert = GenerateMessageAlert(TypeAlert.Success, "Usuário salvo com sucesso!");
+    if (this.saveUserSubscription) this.saveUserSubscription.unsubscribe();
+
+    const subscribe = this.messageTimer.subscribe(() => {
+      this.fadeOutAlertMessage();
+      this.enableButtonsAgain();
+      this.navigateToReport();
+      subscribe.unsubscribe();
     });
   }
 
-  private afterUserServiceSubscription(){
-    this.saveUserForsubscription.unsubscribe();
+  private addOrEditErrorHandler = () => {
+    this.messageAlert = GenerateMessageAlert(TypeAlert.Error, "Erro ao salvar usuário!");
+    if (this.saveUserSubscription) this.saveUserSubscription.unsubscribe();
+
     const subscribe = this.messageTimer.subscribe(() => {
-      this.messageAlert.active = false;
-      this.isLoading = false;
+      this.fadeOutAlertMessage();
+      this.enableButtonsAgain();
       subscribe.unsubscribe();
     });
+  }
+
+  private fadeOutAlertMessage(){
+    this.messageAlert.active = false;
+  }
+
+  private enableButtonsAgain(){
+    this.isLoading = false;
+  }
+
+  private navigateToReport(){
+    this.router.navigate(["/report"]);
+  }
+
+  private convertUserFromUserForm() : UserModel{
+    const user : UserModel = this.userForm.value;
+    user.id = (this.user && this.user.id) ? this.user.id : this.EMPTY_GUID;
+    return user;
   }
 }

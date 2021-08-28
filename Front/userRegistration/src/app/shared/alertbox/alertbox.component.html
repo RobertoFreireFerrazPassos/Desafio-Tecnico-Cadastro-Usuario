@@ -1,6 +1,8 @@
-<div *ngIf="isSucessMessage()" class="alert alert-success" role="alert">
-  {{ message }}
-</div>
-<div *ngIf="isErrorMessage()" class="alert alert-danger" role="alert">
-  {{ message }}
+<div>
+  <div *ngIf="isSucessMessage()" class="alert alert-success" role="alert">
+    {{ message }}
+  </div>
+  <div *ngIf="isErrorMessage()" class="alert alert-danger" role="alert">
+    {{ message }}
+  </div>
 </div>

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserModel } from 'src/app/shared/models/user/user-model';
 import { Observable } from 'rxjs';
+
+import { UserModel } from 'src/app/shared/models/user/user-model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserHttpService {
-  rootPath = 'http://localhost:5000';
+  rootPath = environment.apiUrl;
 
   constructor(private http : HttpClient) { }
 
@@ -15,8 +17,12 @@ export class UserHttpService {
     return this.http.get(this.rootPath + "/user/get");
   }
 
-  public deleteUser(user : UserModel) : Observable<any>{
-    return this.http.get(this.rootPath + "/user/delete?id=" + user.id);
+  public toggleActivationUser(user : UserModel) : Observable<any>{
+    return this.http.post(this.rootPath + "/user/toggleactivation", user);
+  }
+
+  public deleteUser(userId : string) : Observable<any>{
+    return this.http.get(this.rootPath + "/user/delete?id=" + userId);
   }
 
   public editUser(user : UserModel) : Observable<any>{
