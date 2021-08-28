@@ -5,7 +5,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
 
 import { Gender, UserModel } from '../../shared/models/user/user-model';
 import { TypeAlert, MessageAlert } from '../../shared/alertbox/altertMessage';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserComponent implements OnInit {
   userForm : FormGroup;
+  user : UserModel;
   genders : string[] = [Gender.Male,Gender.Female];
   isLoading : Boolean =  false;
   saveUserForsubscription : Subscription;
@@ -26,17 +27,28 @@ export class UserComponent implements OnInit {
   messageTimer = timer(3000);
 
   constructor(private userService : UserService,
-              private route : ActivatedRoute) {
-    const userId = this.route.snapshot.queryParams.id;
+              private router: Router) {
+    if (this.router.getCurrentNavigation().extras.state) {
+      const routeState = this.router.getCurrentNavigation().extras.state;
+      if (routeState && routeState.user) {
+        this.user = routeState.user;
+        console.log(this.user);
+      }
+    }
   }
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      'name' : new FormControl(null, [Validators.required,Validators.minLength(3)]),
-      'birthDate' : new FormControl(null, Validators.required),
-      'email' : new FormControl(null, Validators.required),
-      'password' : new FormControl(null, null),
-      'gender' : new FormControl(null, Validators.required)
+      'name' : new FormControl(this.user ? this.user.name : null, [Validators.required,Validators.minLength(3)]),
+      'birthDate' : new FormControl(this.user ?
+        {
+          year: ( new Date(this.user.birthDate)).getFullYear(),
+          month: ( new Date(this.user.birthDate)).getMonth(),
+          day: ( new Date(this.user.birthDate)).getDay()
+        } : null, Validators.required),
+      'email' : new FormControl(this.user ? this.user.email : null, Validators.required),
+      'password' : new FormControl(null),
+      'gender' : new FormControl(this.user ? this.user.gender : null, Validators.required)
     });
   }
 

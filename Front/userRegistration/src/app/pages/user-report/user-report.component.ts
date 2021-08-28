@@ -15,14 +15,26 @@ export class UserReportComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
+    this.userService.getUsers().subscribe(users => {
+      this.users = users;
+    });
   }
 
-  editUser(id : string) : void {
-    this.route.navigate(["/user"],{ queryParams : { id : id } });
+  editUser(user : UserModel) : void {
+    this.route.navigate(["/user"],{
+      state : {
+        user : user
+      }
+    });
   }
 
   toggleActivationToUser(id : string): void {
     const user = this.users.find(user => user.id === id);
     user.active = !user.active;
+  }
+
+  getDate(dateString: string){
+    const date = (new Date(dateString));
+    return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
   }
 }

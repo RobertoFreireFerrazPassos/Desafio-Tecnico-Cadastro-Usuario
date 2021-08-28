@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserHttpService {
-  rootPath = '';
+  rootPath = 'http://localhost:5000';
 
   constructor(private http : HttpClient) { }
 
-  public getUsers(user : UserModel) : Observable<any>{
+  public getUsers() : Observable<any>{
     return this.http.get(this.rootPath + "/user/get");
   }
 
