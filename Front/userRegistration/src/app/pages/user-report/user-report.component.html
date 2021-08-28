@@ -15,8 +15,8 @@
         <td> {{ getDate(user.birthDate) }}</td>
         <td> {{ user.email }}</td>
         <td> {{ user.gender }}</td>
-        <td> <input type="checkbox" name="active" [disabled]="isLoading" [ngModel]="user.active" (click)="toggleActivationToUser(user.id)"></td>
-        <th><span style ="cursor: pointer;" (click)="editUser(user)"><i class="fas fa-edit"></i></span></th>
+        <td> <app-check-box [disabled]="isLoading" [id]="user.id" (onToggle)="toggleActivationToUser(user.id)" [active]="user.active"></app-check-box></td>
+        <th><span  [ngStyle]="{ cursor: !isLoading ? 'pointer' : ''}"  (click)="editUser(user)"><i class="fas fa-edit"></i></span></th>
       </tr>
     </table>
   </div>

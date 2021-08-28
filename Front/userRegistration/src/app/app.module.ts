@@ -10,6 +10,7 @@ import { NavbarComponent } from './core/navbar/navbar.component';
 import { UserComponent } from './pages/user/user.component';
 import { AlertboxComponent } from './shared/alertbox/alertbox.component';
 import { UserReportComponent } from './pages/user-report/user-report.component';
+import { CheckboxComponent } from './shared/checkbox/check-box.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UserReportComponent } from './pages/user-report/user-report.component';
     NavbarComponent,
     UserComponent,
     AlertboxComponent,
-    UserReportComponent
+    UserReportComponent,
+    CheckboxComponent
   ],
   imports: [
     BrowserModule,

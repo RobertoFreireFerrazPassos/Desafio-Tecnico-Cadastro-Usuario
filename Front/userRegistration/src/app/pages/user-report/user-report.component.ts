@@ -34,6 +34,7 @@ export class UserReportComponent implements OnInit  {
   }
 
   editUser(user : UserModel) : void {
+    if (this.isLoading) return;
     this.router.navigate(["/user"],{
       state : {
         user : user
@@ -41,16 +42,15 @@ export class UserReportComponent implements OnInit  {
     });
   }
 
-  toggleActivationToUser(id : string): void {
+  toggleActivationToUser(userId: string): void {
     this.isLoading = true;
-    this.userEdited = this.users.find(user => user.id === id);
+    this.userEdited = this.users.find(user => user.id === userId);
     this.toggleActivationUserSubscription = this.userService.toggleActivationUser(this.userEdited).subscribe(this.toggleActivationSuccessHandler, this.toggleActivationErrorHandler);
   }
 
-  private toggleActivationSuccessHandler = (user : UserModel) => {
+  private toggleActivationSuccessHandler = () => {
     this.messageAlert = GenerateMessageAlert(TypeAlert.Success, "Usuário editado com sucesso!");
     if (this.toggleActivationUserSubscription) this.toggleActivationUserSubscription.unsubscribe();
-    this.replaceActiveValueUserEdited(user.active);
     const subscribe = this.messageTimer.subscribe(() => {
       this.fadeOutAlertMessage();
       this.enableButtonsAgain();
@@ -60,7 +60,10 @@ export class UserReportComponent implements OnInit  {
 
   private replaceActiveValueUserEdited(activeValue : boolean) : void {
     const userEditedIndex = this.users.findIndex(user => user.id === this.userEdited.id);
-    this.users[userEditedIndex].active = activeValue;
+    this.users[userEditedIndex] = {
+      ... this.users[userEditedIndex],
+      active : activeValue
+    };
   }
 
   private toggleActivationErrorHandler = () => {
