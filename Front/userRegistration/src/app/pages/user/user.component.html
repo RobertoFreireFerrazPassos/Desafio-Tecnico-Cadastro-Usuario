@@ -1,3 +1,7 @@
+<div style="position:absolute; right:20px; top:-5px;">
+  <app-alertbox *ngIf="messageAlert.active" [message]="messageAlert.message" [type]="messageAlert.type"></app-alertbox>
+</div>
+
 <div class="container m-4">
     <div>
       <form [formGroup]="userForm">
@@ -58,7 +62,6 @@
         </div>
       </form>
     </div>
-    <app-alertbox *ngIf="messageAlert.active" [message]="messageAlert.message" [type]="messageAlert.type"></app-alertbox>
 </div>
 
-<app-modal (confirmationEvent)="confirmDeleteUser()" [modalObject]="modalLabels"></app-modal>
+<app-modal (confirmationEvent)="confirmDeleteUser()" [modalObject]="modalDeleteUser"></app-modal>

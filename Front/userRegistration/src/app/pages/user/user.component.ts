@@ -18,9 +18,9 @@ export class UserComponent implements OnInit {
   userForm : FormGroup;
   user : UserModel;
   EMPTY_GUID : string = "00000000-0000-0000-0000-000000000000";
-  modalLabels : ModalModel = {
+  modalDeleteUser : ModalModel = {
     title : "Remoção de usuário",
-    text : "Deseja deletar este usuário?",
+    text : "Deseja realmente excluir?",
     button : "Deletar"
   };
   genders : string[] = [Gender.Male,Gender.Female];

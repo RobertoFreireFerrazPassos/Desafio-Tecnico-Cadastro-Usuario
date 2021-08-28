@@ -5,6 +5,8 @@ import { Subscription, timer } from 'rxjs';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { UserModel } from 'src/app/shared/models/user/user-model';
 import { TypeAlert, MessageAlert, GenerateMessageAlert } from '../../shared/alertbox/altertMessage';
+import { ModalService } from 'src/app/shared/modal/modal.service';
+import { ModalModel } from 'src/app/shared/models/modal/modal-model';
 
 @Component({
   selector: 'app-user-report',
@@ -13,8 +15,15 @@ import { TypeAlert, MessageAlert, GenerateMessageAlert } from '../../shared/aler
 })
 export class UserReportComponent implements OnInit  {
   users : UserModel[] = [];
+  deleteUserSubscription :Subscription;
   toggleActivationUserSubscription : Subscription;
   userEdited : UserModel;
+  userToDelete : UserModel;
+  modalDeleteUser : ModalModel = {
+    title : "Remoção de usuário",
+    text : "Deseja realmente excluir?",
+    button : "Deletar"
+  };
   isLoading : boolean = false;
   messageTimer = timer(2000);
   messageAlert : MessageAlert = {
@@ -24,7 +33,8 @@ export class UserReportComponent implements OnInit  {
   }
 
   constructor(private router : Router,
-              private userService: UserService) { }
+              private userService: UserService,
+              private modalService : ModalService) { }
 
   ngOnInit() {
     const getUserSubscription = this.userService.getUsers().subscribe(users => {
@@ -39,6 +49,47 @@ export class UserReportComponent implements OnInit  {
       state : {
         user : user
       }
+    });
+  }
+
+  openModalToDeleteUser(user : UserModel) : void {
+    if (this.isLoading) return;
+    this.userToDelete = user;
+    this.modalService.openModal.next();
+  }
+
+  confirmDeleteUser() : void {
+    this.deleteUser();
+  }
+
+  deleteUser() : void {
+    this.isLoading = true;
+    this.deleteUserSubscription = this.userService.deleteUser(this.userToDelete.id).subscribe(this.deleteSuccessHandler, this.deleteErrorHandler);
+  }
+
+  private deleteSuccessHandler = () => {
+    this.messageAlert = GenerateMessageAlert(TypeAlert.Success, "Usuário removido com sucesso!");
+    if (this.deleteUserSubscription) this.deleteUserSubscription.unsubscribe();
+
+    const subscribe = this.messageTimer.subscribe(() => {
+      this.fadeOutAlertMessage();
+      this.enableButtonsAgain();
+      const getUserSubscription = this.userService.getUsers().subscribe(users => {
+        this.users = users;
+        getUserSubscription.unsubscribe();
+      });
+      subscribe.unsubscribe();
+    });
+  }
+
+  private deleteErrorHandler = () => {
+    this.messageAlert = GenerateMessageAlert(TypeAlert.Error, "Erro ao remover usuário!");
+    if (this.deleteUserSubscription) this.deleteUserSubscription.unsubscribe();
+
+    const subscribe = this.messageTimer.subscribe(() => {
+      this.fadeOutAlertMessage();
+      this.enableButtonsAgain();
+      subscribe.unsubscribe();
     });
   }
 
