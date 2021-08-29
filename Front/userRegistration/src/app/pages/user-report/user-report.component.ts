@@ -8,6 +8,7 @@ import { TypeAlert, MessageAlert, GenerateMessageAlert } from '../../shared/aler
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { ModalModel } from 'src/app/shared/models/modal/modal-model';
 import { FormControl, FormGroup } from '@angular/forms';
+import { UserFilterModel, ActiveFilterTypeEnum, FieldTypeEnum } from '../../shared/models/filters/userFilter-model';
 
 @Component({
   selector: 'app-user-report',
@@ -16,6 +17,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class UserReportComponent implements OnInit  {
   users : UserModel[] = [];
+  activeOptions : string[] = [ActiveFilterTypeEnum.NO_FILTER,ActiveFilterTypeEnum.INACTIVE,ActiveFilterTypeEnum.ACTIVE];
   userSearchForm : FormGroup;
   deleteUserSubscription : Subscription;
   searchUserSubscription : Subscription;
@@ -47,17 +49,21 @@ export class UserReportComponent implements OnInit  {
 
     this.userSearchForm = new FormGroup({
       'name' : new FormControl(''),
-      'active' : new FormControl(false)
+      'active' : new FormControl(ActiveFilterTypeEnum.NO_FILTER)
     });
   }
 
-  toggleActivationUserSearch() : void {
-
-  }
-
   searchUserByFilter() : void {
-    const filter = this.userSearchForm.value;
-    this.searchUserSubscription = this.userService.getUsersByFilter(filter).subscribe(users => {
+    const userSearch = this.userSearchForm.value;
+
+    let userFilter : UserFilterModel = {
+      Filters : []
+    }
+
+    if (userSearch.name.trim()) userFilter.Filters.push({  Field : FieldTypeEnum.NAME, Value : userSearch.name.trim() });
+    if (userSearch.active != ActiveFilterTypeEnum.NO_FILTER) userFilter.Filters.push({  Field : FieldTypeEnum.ACTIVE, Value : userSearch.active });
+
+    this.searchUserSubscription = this.userService.getUsersByFilter(userFilter).subscribe(users => {
       this.users = users;
     });
   }

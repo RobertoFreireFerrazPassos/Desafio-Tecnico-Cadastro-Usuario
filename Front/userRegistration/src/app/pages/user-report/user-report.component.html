@@ -13,13 +13,11 @@
             class="form-control"
             placeholder="Pesquisar por nome">
         </div>
-        <div class="col-4">
-          <span style="position: relative; top: 7px;">
-            <label class="form-check-label">Usuários Ativos: </label>
-            <input type="checkbox"
-              class="form-check-input"
-              formControlName="active"
-              (ngModelChange)="toggleActivationUserSearch()">
+        <div class="col-2">
+          <span>
+              <select class="form-control" formControlName="active">
+                <option *ngFor="let activeOption of activeOptions" [value]="activeOption"> {{ activeOption }}</option>
+              </select>
           </span>
         </div>
         <div class="col-3">

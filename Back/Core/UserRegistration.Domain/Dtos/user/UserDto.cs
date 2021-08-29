@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserRegistration.Domain.Dtos.user
+namespace UserRegistration.Domain.Dtos.User
 {
     public class UserDto
     {

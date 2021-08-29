@@ -1,8 +1,9 @@
-﻿namespace UserRegistration.Application.DataContracts.Requests
+﻿using UserRegistration.Domain.Dtos.User;
+
+namespace UserRegistration.Application.DataContracts.Requests
 {
     public class UsersFilterRequest
     {
-        public string Name { get; set; }
-        public bool Active { get; set; }
+        public Filter[] Filters { get; set; }
     }
 }

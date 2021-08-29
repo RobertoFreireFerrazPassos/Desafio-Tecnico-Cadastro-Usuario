@@ -7,7 +7,7 @@ using UserRegistration.Application.DataContracts.Responses;
 using System.Threading.Tasks;
 using UserRegistration.Domain.Services.User;
 using AutoMapper;
-using UserRegistration.Domain.Dtos.user;
+using UserRegistration.Domain.Dtos.User;
 
 namespace UserRegistration.API.Controllers
 {
@@ -41,12 +41,12 @@ namespace UserRegistration.API.Controllers
             }
         }
 
-        /*[HttpPost("getusersbyfilter")]
-        public async Task<IActionResult> GetUsersByFilter(UsersFilterRequest filter)
+        [HttpPost("getusersbyfilter")]
+        public async Task<IActionResult> GetUsersByFilter(UsersFilterRequest userfilter)
         {
             try
-            {
-                var result = await UserService.GetUsersByFilterAsync();
+            {            
+                var result = await UserService.GetUsersByFilterAsync(Mapper.Map<UserFilterDto>(userfilter));
                 return Ok(Mapper.Map<IEnumerable<UserResponse>>(result));
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace UserRegistration.API.Controllers
             }
         }
 
-        [HttpPost("toggleactivation")]
+        /*[HttpPost("toggleactivation")]
         public async Task<IActionResult> ToggleActivation([FromBody] UserToggleactivationRequest userToggleactivationRequest)
         {
             try
@@ -88,7 +88,7 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                //var result = await UserService.EditUserAsync();
+                var result = await UserService.EditUserAsync();
                 return Ok(Mapper.Map<UserResponse>(result));
             }
             catch (Exception ex)
@@ -102,7 +102,7 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                //var result = await UserService.DeleteUserAsync();
+                var result = await UserService.DeleteUserAsync();
                 return Ok(result);
             }
             catch (Exception ex)

@@ -2,7 +2,8 @@
 using System;
 using UserRegistration.Application.DataContracts.Responses;
 using UserRegistration.Domain.Entities;
-using UserRegistration.Domain.Dtos.user;
+using UserRegistration.Domain.Dtos.User;
+using UserRegistration.Application.DataContracts.Requests;
 
 namespace UserRegistration.Application.Infrastructure.AutoMapper.Profiles
 {
@@ -15,6 +16,9 @@ namespace UserRegistration.Application.Infrastructure.AutoMapper.Profiles
                     src => new DateTime(src.BirthDate.Year, src.BirthDate.Month, src.BirthDate.Day)
                 ));
             CreateMap<UserDto, UserResponse>();
+            CreateMap<UsersFilterRequest, UserFilterDto>();
+            CreateMap<UserRequest, UserDto>();
+            CreateMap<UserToggleactivationRequest, UserDto>();
         }
     }
 }

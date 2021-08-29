@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UserRegistration.Domain.Services.User;
-using UserRegistration.Domain.Dtos.user;
+using UserRegistration.Domain.Dtos.User;
 using UserRegistration.Domain.Repositories;
-using UserRegistration.Domain.Entities;
 using System;
 using AutoMapper;
 
@@ -27,7 +26,13 @@ namespace UserRegistration.Application.Services.User
 
         public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            var result = await UserRepository.GetAllAsync();
+            var result = await UserRepository.GetUsersAsync();
+            return Mapper.Map<IEnumerable<UserDto>>(result);
+        }
+        
+        public async Task<IEnumerable<UserDto>> GetUsersByFilterAsync(UserFilterDto userfilter)
+        {
+            var result = await UserRepository.GetUsersAsync(userfilter);
             return Mapper.Map<IEnumerable<UserDto>>(result);
         }
 
@@ -80,35 +85,11 @@ namespace UserRegistration.Application.Services.User
             };
 
             return userResponse;*//*
-        }*/
-
-        /*public Task<IEnumerable<UserDto>> GetUsersByFilterAsync()
-        {
-            *//*List<UserResponse> userResponse = new List<UserResponse>();
-            foreach (User user in users.Where(u => {
-                if (!String.IsNullOrWhiteSpace(filter.Name))
-                {
-                    return u.Active == filter.Active && u.Name.Contains(filter.Name, StringComparison.OrdinalIgnoreCase);
-                }
-                return u.Active == filter.Active;
-            }))
-            {
-                userResponse.Add(new UserResponse()
-                {
-                    Active = user.Active,
-                    Email = user.Email,
-                    BirthDate = new DateTime(user.BirthDate.Year, user.BirthDate.Month, user.BirthDate.Day),
-                    Name = user.Name,
-                    Gender = user.Gender,
-                    Id = user.Id
-                });
-            }
-            return userResponse;*//*
         }
 
         public Task<bool> ToggleActivationInUserAsync()
         {
-            *//*User userToEdit = users.FirstOrDefault(u => u.Id == userToggleactivationRequest.Id);
+            User userToEdit = users.FirstOrDefault(u => u.Id == userToggleactivationRequest.Id);
             userToEdit.Active = !userToggleactivationRequest.Active;
 
             return true;*//*
@@ -116,7 +97,7 @@ namespace UserRegistration.Application.Services.User
 
         public Task<bool> DeleteUserAsync()
         {
-            *//*User userToRemove = users.FirstOrDefault(u => u.Id == id);
+            User userToRemove = users.FirstOrDefault(u => u.Id == id);
             users.Remove(userToRemove);
 
             return true;*//*
