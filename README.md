@@ -2,15 +2,17 @@
 
 ## Front End
 
-npm i to install dependencies
+* To install dependencies
+npm i 
 
+* To run front end app
 npm run start 
 or
 ng serve --configuration=dev 
 
 ## Back End
-Run the UserRegistration.API created on the launchSettings.json
+* Run the WebApi by running the UserRegistration.API profile created on the launchSettings.json
 
 ## Database
-It was provided a docker-compose.yml so it can use docker to run mssql server container 
-Scripts are in the DataBase\Scripts folder
+* It was provided a docker-compose.yml so it can use docker to run mssql server container. 
+* Scripts are in the DataBase\Scripts folder
