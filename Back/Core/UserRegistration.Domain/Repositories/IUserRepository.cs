@@ -8,5 +8,7 @@ namespace UserRegistration.Domain.Repositories
     public interface IUserRepository
     {
         public Task<IEnumerable<UserEntity>> GetUsersAsync(UserFilterDto filter = null);
+
+        public Task<int> ToggleActivationInUserAsync(UserToggleActivationDto userToggleActivationDto);
     }
 }

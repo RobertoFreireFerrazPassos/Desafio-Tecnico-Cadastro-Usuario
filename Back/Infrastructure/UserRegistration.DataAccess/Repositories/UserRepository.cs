@@ -8,6 +8,7 @@ using UserRegistration.DataAccess.Repositories.Base;
 using UserRegistration.Domain.Repositories;
 using UserRegistration.Domain.Dtos.User;
 using UserRegistration.Domain.Enums.User;
+using UserRegistration.DataAccess.Utils;
 
 namespace UserRegistration.DataAccess.Repositories
 {
@@ -35,6 +36,14 @@ namespace UserRegistration.DataAccess.Repositories
             return ExecuteAsync(query);
         }
 
+        public async Task<int> ToggleActivationInUserAsync(UserToggleActivationDto userToggleActivationDto)
+        {
+            string query = $@"UPDATE UR_USER SET ACTIVE = {BoolUtil.ConvertBoolToString(userToggleActivationDto.Active)}
+                              WHERE USER_ID = @UserId
+                            ";
+            return await UpdateAsync(query,("@UserId", userToggleActivationDto.Id));
+        }
+
         private string BuildFilter(UserFilterDto userfilter)
         {
             if (userfilter == null || userfilter.Filters.Length == 0) return "";
@@ -50,7 +59,7 @@ namespace UserRegistration.DataAccess.Repositories
             Filter activeFilter = userfilter.Filters.FirstOrDefault(f => f.Field == FieldTypeEnum.Active.ToString());
             if (activeFilter != null)
             {
-                filterList.Add($@"U.ACTIVE = {(activeFilter.Value == ActiveEnum.Ativo.ToString() ? "'TRUE'" : "'FALSE'")}");
+                filterList.Add($@"U.ACTIVE = {BoolUtil.ConvertBoolToString(activeFilter.Value == ActiveEnum.Ativo.ToString())}");
             }       
 
             return filterList?.Count > 0 ? "Where " + filterList.Aggregate((a, b) => a + " AND " + b) : "";

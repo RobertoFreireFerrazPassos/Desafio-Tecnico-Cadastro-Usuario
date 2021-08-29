@@ -123,7 +123,7 @@ export class UserReportComponent implements OnInit  {
     this.userEdited = this.users.find(user => user.id === userId);
     this.toggleActivationUserSubscription = this.userService.toggleActivationUser({
       id : this.userEdited.id,
-      active : this.userEdited.active
+      active : !this.userEdited.active
     }).subscribe(this.toggleActivationSuccessHandler, this.toggleActivationErrorHandler);
   }
 

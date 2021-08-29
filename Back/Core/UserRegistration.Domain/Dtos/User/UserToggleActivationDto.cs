@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace UserRegistration.Application.DataContracts.Requests
+namespace UserRegistration.Domain.Dtos.User
 {
-    public class UserToggleActivationRequest
+    public class UserToggleActivationDto
     {
         public Guid Id { get; set; }
         public bool Active { get; set; }

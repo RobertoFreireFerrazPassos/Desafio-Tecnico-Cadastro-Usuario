@@ -36,6 +36,11 @@ namespace UserRegistration.Application.Services.User
             return Mapper.Map<IEnumerable<UserDto>>(result);
         }
 
+        public async Task<int> ToggleActivationInUserAsync(UserToggleActivationDto userToggleActivationDto)
+        {
+            return await UserRepository.ToggleActivationInUserAsync(userToggleActivationDto);
+        }
+
         /*public Task<UserDto> EditUserAsync() {
             *//*User userToEdit = users.FirstOrDefault(u => u.Id == user.Id);
 

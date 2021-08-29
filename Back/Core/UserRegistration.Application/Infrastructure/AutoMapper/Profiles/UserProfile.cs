@@ -18,7 +18,7 @@ namespace UserRegistration.Application.Infrastructure.AutoMapper.Profiles
             CreateMap<UserDto, UserResponse>();
             CreateMap<UsersFilterRequest, UserFilterDto>();
             CreateMap<UserRequest, UserDto>();
-            CreateMap<UserToggleactivationRequest, UserDto>();
+            CreateMap<UserToggleActivationRequest, UserToggleActivationDto>();
         }
     }
 }

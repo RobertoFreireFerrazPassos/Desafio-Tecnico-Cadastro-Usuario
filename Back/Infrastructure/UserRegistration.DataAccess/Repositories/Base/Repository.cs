@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Dapper;
 using System.Collections.Generic;
-using UserRegistration.Domain.Repositories.Base;
-using System.Linq;
 using UserRegistration.Domain.Entities.Base;
 
 namespace UserRegistration.DataAccess.Repositories.Base
 {
-	public class Repository<T> : IRepository<T> where T : Entity
+	public class Repository<T> where T : Entity
 	{
         private readonly IConfiguration configuration;
 		public Repository(IConfiguration configuration)
@@ -22,20 +20,14 @@ namespace UserRegistration.DataAccess.Repositories.Base
             return new SqlConnection(configuration.GetConnectionString("mssqlserverConnection"));
         }
 
-		public async Task<IEnumerable<T>> ExecuteAsync(string query, params (string, object)[] parameters)
+		public async Task<IEnumerable<T>> ExecuteAsync(string query)
 		{
 			using (var sqlConnection = OpenDbConnection())
 			{
 				try
 				{
 					await sqlConnection.OpenAsync();
-					if (parameters.Length == 0)
-					{
-						var result = await sqlConnection.QueryAsync<T>(query);
-						return result; 
-					} else {
-						return await sqlConnection.QueryAsync<T>(query, AddParameters(parameters));
-					}					
+					return await sqlConnection.QueryAsync<T>(query);
 				}
 				catch (Exception exception)
 				{
@@ -48,14 +40,74 @@ namespace UserRegistration.DataAccess.Repositories.Base
 			}
 		}
 
-		public async Task<IEnumerable<Z>> ExecuteAsync<Z>(string query, params (string, object)[] parameters)
+		public async Task AddAsync(T entity, string query)
 		{
 			using (var sqlConnection = OpenDbConnection())
 			{
 				try
 				{
 					await sqlConnection.OpenAsync();
-					return await sqlConnection.QueryAsync<Z>(query, AddParameters(parameters));
+					await sqlConnection.ExecuteAsync(query, entity);
+				}
+				catch (Exception exception)
+				{
+					throw exception;
+				}
+				finally
+				{
+					sqlConnection.Close();
+				}
+			}
+		}
+
+		public async Task<int> UpdateAsync(T entity, string query)
+		{
+			using (var sqlConnection = OpenDbConnection())
+			{
+				try
+				{
+					await sqlConnection.OpenAsync();
+					return await sqlConnection.ExecuteAsync(query, entity);
+				}
+				catch (Exception exception)
+				{
+					throw exception;
+				}
+				finally
+				{
+					sqlConnection.Close();
+				}
+			}
+		}
+
+		public async Task<int> UpdateAsync(string query, params (string, object)[] parameter)
+		{
+			using (var sqlConnection = OpenDbConnection())
+			{
+				try
+				{
+					await sqlConnection.OpenAsync();
+					return await sqlConnection.ExecuteAsync(query, AddParameters(parameter));
+				}
+				catch (Exception exception)
+				{
+					throw exception;
+				}
+				finally
+				{
+					sqlConnection.Close();
+				}
+			}
+		}
+
+		public async Task DeleteAsync(string query)
+		{
+			using (var sqlConnection = OpenDbConnection())
+			{
+				try
+				{
+					await sqlConnection.OpenAsync();
+					await sqlConnection.ExecuteAsync(query);
 				}
 				catch (Exception exception)
 				{
@@ -77,6 +129,6 @@ namespace UserRegistration.DataAccess.Repositories.Base
 			}
 
 			return dictionary;
-		}	
-	}
+		}
+    }
 }

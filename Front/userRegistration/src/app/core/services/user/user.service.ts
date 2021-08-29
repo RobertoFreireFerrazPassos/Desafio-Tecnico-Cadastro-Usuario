@@ -20,7 +20,7 @@ export class UserService {
     return this.userHttpService.getUsersByFilter(userFilter);
   }
 
-  public toggleActivationUser(user) : Observable<boolean>{
+  public toggleActivationUser(user) : Observable<void>{
     return this.userHttpService.toggleActivationUser(user);
   }
 

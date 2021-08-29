@@ -55,12 +55,12 @@ namespace UserRegistration.API.Controllers
             }
         }
 
-        /*[HttpPost("toggleactivation")]
-        public async Task<IActionResult> ToggleActivation([FromBody] UserToggleactivationRequest userToggleactivationRequest)
+        [HttpPost("toggleactivation")]
+        public async Task<IActionResult> ToggleActivation([FromBody] UserToggleActivationRequest request)
         {
             try
             {
-                var result = await UserService.ToggleActivationInUserAsync();
+                var result = await UserService.ToggleActivationInUserAsync(Mapper.Map<UserToggleActivationDto>(request));
                 return Ok(result);
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace UserRegistration.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /*
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] UserRequest user)
         {
@@ -109,6 +109,7 @@ namespace UserRegistration.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+        }
+        */
     }
 }
