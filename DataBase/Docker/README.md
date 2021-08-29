@@ -1,6 +1,3 @@
-# Index.js Node
-1 - Run command 'node index.js' to run index.js
-
 # Docker
 
 reference: https://blog.logrocket.com/docker-sql-server/
@@ -33,6 +30,11 @@ it will open the bash on linux inside Docker
 
 8 - run "/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P change_this_password" to enter in sql commands
 
-9 run 'select name from sys.Databases;' press enter, next line and type go
+9 run any query, example: 'select name from sys.Databases' press enter, next line and type 'go'
 
 10 type 'control+C' and type after 'exit' to leave the linux bash
+
+11 - but, just use Sql server management studio as shown in the image, please :)
+ServerName : localhost
+User       : sa
+Password   : change_this_password
