@@ -130,6 +130,8 @@ export class UserReportComponent implements OnInit  {
   private toggleActivationSuccessHandler = () => {
     this.messageAlert = GenerateMessageAlert(TypeAlert.Success, "Usuário editado com sucesso!");
     if (this.toggleActivationUserSubscription) this.toggleActivationUserSubscription.unsubscribe();
+    this.replaceActiveValueUserEdited(!this.userEdited.active);
+    this.userEdited = null;
     const subscribe = this.messageTimer.subscribe(() => {
       this.fadeOutAlertMessage();
       this.enableButtonsAgain();

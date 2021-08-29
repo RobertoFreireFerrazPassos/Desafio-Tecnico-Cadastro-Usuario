@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using UserRegistration.Domain.Entities.Base;
 
 namespace UserRegistration.Domain.Entities

@@ -1,5 +1,5 @@
 ﻿using System;
-using UserRegistration.API.Models;
+using UserRegistration.Domain.Dtos;
 
 namespace UserRegistration.Application.DataContracts.Requests
 {

@@ -44,6 +44,51 @@ namespace UserRegistration.DataAccess.Repositories
             return await UpdateAsync(query,("@UserId", userToggleActivationDto.Id));
         }
 
+        public async Task<int> EditUserAsync(UserEntity user)
+        {
+
+            string query = $@"DECLARE @Feminino AS uniqueidentifier
+                            SELECT @Feminino = [GENDER_ID] FROM UR_GENDER WHERE DESCRIPTION = 'Feminino'
+
+                            DECLARE @Masculino AS uniqueidentifier
+                            SELECT @Masculino = [GENDER_ID] FROM UR_GENDER WHERE DESCRIPTION = 'Masculino'
+                                
+                                UPDATE UR_USER SET 
+                                NAME = @Name,
+                                BIRTHDATE = @BirthDate,
+                                EMAIL = @Email,
+                                PASSWORD = @Password,
+                                ACTIVE = @Active,
+                                GENDERID = {( user.Gender == GenderEnum.Masculino.ToString() ? "@Masculino" : "@Feminino" )}
+                            WHERE USER_ID = @Id";
+            return await UpdateAsync(user, query);
+        }
+                    
+        public async Task<bool> AddUserAsync(UserEntity user)
+        {
+            string query = $@"DECLARE @Feminino AS uniqueidentifier
+                            SELECT @Feminino = [GENDER_ID] FROM UR_GENDER WHERE DESCRIPTION = 'Feminino'
+
+                            DECLARE @Masculino AS uniqueidentifier
+                            SELECT @Masculino = [GENDER_ID] FROM UR_GENDER WHERE DESCRIPTION = 'Masculino'
+                                
+                            INSERT INTO UR_USER 
+							   (USER_ID,NAME,BIRTHDATE,EMAIL,PASSWORD,ACTIVE,GENDERID)
+						    VALUES
+							   (NEWID(),@Name,@BirthDate,@Email,@Password,@Active,
+                            {( user.Gender == GenderEnum.Masculino.ToString() ? "@Masculino" : "@Feminino" )}
+                            )";
+            await AddAsync(user, query);
+            return true;
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid id)
+        {
+            string query = $@"DELETE UR_USER WHERE USER_ID = '{id}'";
+            await DeleteAsync(query);            
+            return true;
+        }
+
         private string BuildFilter(UserFilterDto userfilter)
         {
             if (userfilter == null || userfilter.Filters.Length == 0) return "";

@@ -68,14 +68,13 @@ namespace UserRegistration.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        /*
+        
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] UserRequest user)
         {
             try
             {
-                var result = await UserService.AddUserAsync();
-                return Ok(Mapper.Map<UserResponse>(result));
+                return Ok(await UserService.AddUserAsync(Mapper.Map<UserDto>(user)));
             }
             catch (Exception ex)
             {
@@ -88,8 +87,7 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                var result = await UserService.EditUserAsync();
-                return Ok(Mapper.Map<UserResponse>(result));
+                return Ok(await UserService.EditUserAsync(Mapper.Map<UserDto>(user)));
             }
             catch (Exception ex)
             {
@@ -102,14 +100,12 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                var result = await UserService.DeleteUserAsync();
-                return Ok(result);
+                return Ok(await UserService.DeleteUserAsync(id));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        */
     }
 }
