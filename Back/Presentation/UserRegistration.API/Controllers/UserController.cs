@@ -2,11 +2,12 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using UserRegistration.API.DataContracts.Requests;
-using UserRegistration.API.DataContracts.Responses;
+using UserRegistration.Application.DataContracts.Requests;
+using UserRegistration.Application.DataContracts.Responses;
 using System.Threading.Tasks;
 using UserRegistration.Domain.Services.User;
 using AutoMapper;
+using UserRegistration.Domain.Dtos.user;
 
 namespace UserRegistration.API.Controllers
 {
@@ -31,7 +32,7 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                var result = await UserService.GetAllAsync();
+                IEnumerable<UserDto> result = await UserService.GetAllAsync();
                 return Ok(Mapper.Map<IEnumerable<UserResponse>>(result));              
             }
             catch (Exception ex)
@@ -40,7 +41,7 @@ namespace UserRegistration.API.Controllers
             }
         }
 
-        [HttpPost("getusersbyfilter")]
+        /*[HttpPost("getusersbyfilter")]
         public async Task<IActionResult> GetUsersByFilter(UsersFilterRequest filter)
         {
             try
@@ -87,7 +88,7 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                var result = await UserService.EditUserAsync();
+                //var result = await UserService.EditUserAsync();
                 return Ok(Mapper.Map<UserResponse>(result));
             }
             catch (Exception ex)
@@ -101,13 +102,13 @@ namespace UserRegistration.API.Controllers
         {
             try
             {
-                var result = await UserService.DeleteUserAsync();
+                //var result = await UserService.DeleteUserAsync();
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
+        }*/
     }
 }

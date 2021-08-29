@@ -1,7 +1,7 @@
 ﻿using System;
 using UserRegistration.API.Models;
 
-namespace UserRegistration.API.DataContracts.Requests
+namespace UserRegistration.Application.DataContracts.Requests
 {
     public class UserRequest
     {

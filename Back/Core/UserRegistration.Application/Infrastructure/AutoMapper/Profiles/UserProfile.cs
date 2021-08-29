@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using UserRegistration.API.DataContracts.Responses;
-using UserRegistration.API.Entities;
+using System;
+using UserRegistration.Application.DataContracts.Responses;
+using UserRegistration.Domain.Entities;
+using UserRegistration.Domain.Dtos.user;
 
 namespace UserRegistration.Application.Infrastructure.AutoMapper.Profiles
 {
@@ -8,8 +10,11 @@ namespace UserRegistration.Application.Infrastructure.AutoMapper.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User,UserResponse>()
-                .ReverseMap();
+            CreateMap<UserEntity, UserDto>()
+                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(
+                    src => new DateTime(src.BirthDate.Year, src.BirthDate.Month, src.BirthDate.Day)
+                ));
+            CreateMap<UserDto, UserResponse>();
         }
     }
 }

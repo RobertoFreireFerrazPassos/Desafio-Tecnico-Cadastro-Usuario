@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\UserRegistration.Application\UserRegistration.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\UserRegistration.CrossCutting.IoC\UserRegistration.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using UserRegistration.Domain.Entities.Base;
 
-namespace UserRegistration.API.Entities
+namespace UserRegistration.Domain.Entities
 {
-    public class User
+    public class UserEntity : Entity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }

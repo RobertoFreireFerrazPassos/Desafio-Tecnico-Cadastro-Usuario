@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserRegistration.API.DataContracts.Responses
+namespace UserRegistration.Application.DataContracts.Responses
 {
     public class UserResponse
     {

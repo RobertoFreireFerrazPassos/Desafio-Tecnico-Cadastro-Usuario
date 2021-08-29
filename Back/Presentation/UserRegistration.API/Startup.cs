@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UserRegistration.Application.Infrastructure.AutoMapper;
+using UserRegistration.CrossCutting.IoC;
 
 namespace UserRegistration.API
 {
@@ -26,7 +27,14 @@ namespace UserRegistration.API
             {
                 s.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
+            RegisterServices(services);
             AutoMapperConfiguration.RegisterMappings(services);
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            RepositoryDependencyInjector.RegisterServices(services);
+            ServiceDependencyInjector.RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

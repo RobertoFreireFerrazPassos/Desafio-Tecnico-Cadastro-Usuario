@@ -1,4 +1,4 @@
-﻿namespace UserRegistration.API.DataContracts.Requests
+﻿namespace UserRegistration.Application.DataContracts.Requests
 {
     public class UsersFilterRequest
     {
