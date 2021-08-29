@@ -2,13 +2,23 @@
 
 ## Front End
 
-* To install dependencies
-npm i 
+* Install dependencies:
 
-* To run front end app
+```
+npm i 
+```
+
+* Run front end app:
+
+```
 npm run start 
-or
+```
+
+* or:
+
+```
 ng serve --configuration=dev 
+```
 
 ## Back End
 * Run the WebApi by running the UserRegistration.API profile created on the launchSettings.json
