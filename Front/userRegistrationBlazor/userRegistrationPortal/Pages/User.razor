@@ -14,6 +14,7 @@
                 <div class="row">
                     <div class="col-5">
                         <InputSelect class="form-control" @bind-Value="@user.Gender">
+                            <option value="">Select a gender</option>
                             @foreach (var gender in genders)
                             {
                                 <option value="@gender">@gender</option>
@@ -47,7 +48,6 @@
                     <button
                         class="btn btn-delete mb-2 mr-2" 
                         disabled="@isLoading" 
-                        type="submit"
                         @onclick="OpenModalToDeleteUser">
                         Excluir
                     </button>
@@ -55,11 +55,11 @@
                 <button 
                     class="btn btn-save mb-2 mr-2"
                     type="submit"
+                        disabled="@(!isUserFormValid || isLoading)"
                     @onclick="SaveUser"
                 >
                     @((IsEditMode() ? "Editar" : "Salvar"))
                 </button>
-                @*disabled="@(!userForm.Valid || isLoading)"*@
             </div>
         </EditForm>
     </div>
@@ -68,35 +68,25 @@
 @code {
     private UserModel user = new UserModel();
     private bool isLoading = false;
+    private bool isUserFormValid = false;
     private List<string> genders = new List<string> { "Male", "Female" };
-    private EditContext userForm;
-
-    protected override void OnInitialized()
-    {
-        userForm = new EditContext(user);
-    }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender)
+        var isUserFormValidTemp = isUserFormValid;
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(user);
+        var isValid = Validator.TryValidateObject(user, validationContext, validationResults, true);
+
+        if (isUserFormValidTemp != isValid)
         {
-            userForm.OnFieldChanged += HandleFieldChanged;
+            isUserFormValid = isValid;
+            StateHasChanged();
         }
     }
-
-    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
-    {
-        // Perform actions based on field changes
-        Console.WriteLine($"Field '{e.FieldIdentifier.FieldName}' value changed to '{e.FieldIdentifier.FieldName}'.");
-    }
-
 
     private void SaveUser()
     {
-        if (userForm.Validate())
-        {
-            // Perform save operation here
-        }
     }
 
     private bool IsEditMode()
