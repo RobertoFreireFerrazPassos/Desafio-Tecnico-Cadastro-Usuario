@@ -26,3 +26,13 @@ ng serve --configuration=dev
 ## Database
 * It was provided a docker-compose.yml so it can use docker to run mssql server container. 
 * Scripts are in the DataBase\Scripts folder
+
+
+
+### References
+
+Icons:
+
+https://getblazorbootstrap.com/docs/content/icons
+
+https://icons.getbootstrap.com/?q=table
